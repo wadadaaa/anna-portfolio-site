@@ -1,0 +1,13 @@
+services:
+  web:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.anna-portfolio.rule=Host(`anna.srv1728444.hstgr.cloud`)
+      - traefik.http.routers.anna-portfolio.entrypoints=websecure
+      - traefik.http.routers.anna-portfolio.tls.certresolver=letsencrypt
+      - traefik.http.services.anna-portfolio.loadbalancer.server.port=80
